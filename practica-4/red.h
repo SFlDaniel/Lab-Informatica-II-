@@ -1,10 +1,19 @@
 #ifndef RED_H
 #define RED_H
 
-class Red
-{
+#include <map>
+#include <string>
+#include "Router.h"
+
+using namespace std;
+
+class Red {
+private:
+    map<string, Router> routers;
+
 public:
-    Red();
+    void agregarRouter(string id);
+    void eliminarRouter(string id);
 };
 
-#endif // RED_H
+#endif
