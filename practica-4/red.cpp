@@ -40,19 +40,16 @@ map<string, int> Red::dijkstra(string origen) {
 
     distancias[origen] = 0;
 
-
     for (size_t i = 0; i < routers.size(); i++) {
         string actual;
         int minDist = numeric_limits<int>::max();
 
-        //Busca distnacia menor
         for (auto &par : distancias) {
             if (!visitado[par.first] && par.second < minDist) {
                 minDist = par.second;
                 actual = par.first;
             }
         }
-
 
         if (minDist == numeric_limits<int>::max()) break;
 
@@ -70,4 +67,18 @@ map<string, int> Red::dijkstra(string origen) {
     }
 
     return distancias;
+}
+
+//NUEVO TABLAS//
+void Red::actualizarTablas() {
+    for (auto &par : routers) {
+        string origen = par.first;
+
+        map<string, int> distancias = dijkstra(origen);
+
+
+        for (auto &d : distancias) {
+            par.second.actualizarCosto(d.first, d.second);
+        }
+    }
 }
