@@ -14,6 +14,8 @@ private:
 public:
     void agregarRouter(string id);
     void eliminarRouter(string id);
+    void conectarRouters(string id1, string id2, int costo);
+    void eliminarConexion(string id1, string id2);
 };
 
 #endif
