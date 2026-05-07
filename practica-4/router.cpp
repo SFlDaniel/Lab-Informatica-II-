@@ -1,6 +1,8 @@
 #include "Router.h"
 #include <iostream>
 
+Router::Router() {}
+
 Router::Router(const std::string& id) : id(id) {}
 
 std::string Router::getId() const {

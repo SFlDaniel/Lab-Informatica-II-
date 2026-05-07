@@ -32,7 +32,7 @@ void Red::eliminarConexion(string id1, string id2) {
 
 void Red::mostrarRed() {
 
-    cout << "\n===== TOPOLOGIA DE RED =====\n";
+    cout << "Topologia";
 
     for (auto &par : routers) {
         par.second.imprimirVecinos();
@@ -121,7 +121,7 @@ void Red::actualizarTablas() {
 
 void Red::mostrarTablas() {
 
-    cout << "\n===== TABLAS DE COSTOS =====\n";
+    cout << "Tabla costo";
 
     for (auto &par : routers) {
 
