@@ -7,39 +7,92 @@ int main() {
 
     Red red;
 
-    red.agregarRouter("A");
-    red.agregarRouter("B");
-    red.agregarRouter("C");
-    red.agregarRouter("D");
+    int cantidadRouters;
+    cout << "Cantidad de routers: ";
+    cin >> cantidadRouters;
 
-    red.conectarRouters("A", "B", 4);
-    red.conectarRouters("A", "C", 10);
-    red.conectarRouters("A", "D", 5);
+    // Agregar routers
+    for (int i = 0; i < cantidadRouters; i++) {
 
-    red.conectarRouters("B", "C", 3);
-    red.conectarRouters("B", "D", 1);
+        string id;
 
-    red.conectarRouters("C", "D", 2);
+        cout << "Ingrese ID del router "
+             << i + 1
+             << ": ";
+
+        cin >> id;
+
+        red.agregarRouter(id);
+    }
+
+    int conexiones;
+
+    cout << "\nCantidad de conexiones: ";
+    cin >> conexiones;
+
+    // Conectar routers
+    for (int i = 0; i < conexiones; i++) {
+
+        string r1, r2;
+        int costo;
+
+        cout << "\nConexion "
+             << i + 1
+             << endl;
+
+        cout << "Router origen: ";
+        cin >> r1;
+
+        cout << "Router destino: ";
+        cin >> r2;
+
+        cout << "Costo: ";
+        cin >> costo;
+
+        red.conectarRouters(r1, r2, costo);
+    }
+
+    cout << "\n===== TOPOLOGIA =====\n";
 
     red.mostrarRed();
 
+    // Actualizar tablas
     red.actualizarTablas();
-//Tbala
+
+    cout << "\n===== TABLAS =====\n";
 
     red.mostrarTablas();
-//dijkstra
 
-    cout << "Distancia desde A";
+    // Dijkstra
+    string origen;
 
-    map<string, int> distancias = red.dijkstra("A");
+    cout << "\nIngrese router origen para Dijkstra: ";
+    cin >> origen;
+
+    map<string, int> distancias =
+        red.dijkstra(origen);
+
+    cout << "\nDistancias desde "
+         << origen
+         << ":\n";
 
     for (auto &par : distancias) {
 
-        cout << "A -> "
+        cout << origen
+             << " -> "
              << par.first
-             << " = "
-             << par.second
-             << endl;
+             << " = ";
+
+        if (par.second == numeric_limits<int>::max()) {
+
+            cout << "INF";
+        }
+        else {
+
+            cout << par.second;
+        }
+
+        cout << endl;
     }
 
     return 0;
