@@ -1,7 +1,8 @@
 #include "Router.h"
 #include <iostream>
+#include <limits>
 
-Router::Router() {}
+Router::Router() : id("") {}
 
 Router::Router(const std::string& id) : id(id) {}
 
@@ -27,7 +28,6 @@ void Router::eliminarVecino(const std::string& vecino) {
 
 void Router::inicializarTabla() {
     tablaCostos.clear();
-
     tablaCostos[id] = 0;
 
     for (const auto& par : vecinos) {
@@ -41,6 +41,10 @@ void Router::actualizarCosto(const std::string& destino, int costo) {
     }
 }
 
+void Router::establecerTablaCostos(const std::map<std::string, int>& nuevaTabla) {
+    tablaCostos = nuevaTabla;
+}
+
 void Router::imprimirVecinos() const {
     std::cout << "Router " << id << " vecinos:\n";
     for (const auto& par : vecinos) {
@@ -51,6 +55,12 @@ void Router::imprimirVecinos() const {
 void Router::imprimirTabla() const {
     std::cout << "Tabla de costos de " << id << ":\n";
     for (const auto& par : tablaCostos) {
-        std::cout << "  -> " << par.first << " : " << par.second << "\n";
+        std::cout << "  -> " << par.first << " : ";
+        if (par.second == std::numeric_limits<int>::max()) {
+            std::cout << "INF";
+        } else {
+            std::cout << par.second;
+        }
+        std::cout << "\n";
     }
 }

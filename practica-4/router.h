@@ -14,11 +14,9 @@ private:
 public:
 
     Router();
-
     Router(const std::string& id);
 
     std::string getId() const;
-
     std::map<std::string, int> getVecinos() const;
     std::map<std::string, int> getTablaCostos() const;
 
@@ -26,8 +24,8 @@ public:
     void eliminarVecino(const std::string& vecino);
 
     void inicializarTabla();
-
     void actualizarCosto(const std::string& destino, int costo);
+    void establecerTablaCostos(const std::map<std::string, int>& nuevaTabla);
 
     void imprimirVecinos() const;
     void imprimirTabla() const;
