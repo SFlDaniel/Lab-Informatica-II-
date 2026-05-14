@@ -35,7 +35,6 @@ int main() {
         }
 
         if (opcion == 0) {
-            cout << "Saliendo...\n";
             break;
         }
 

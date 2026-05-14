@@ -22,17 +22,17 @@ private:
         ) const;
 public:
 
-    void agregarRouter(const string id);
-    void eliminarRouter(const string id);
+    void agregarRouter(const string& id);
+    void eliminarRouter(const string& id);
 
 
-    void conectarRouters(const string id1, const string id2, int costo);
-    void eliminarConexion(const string id1, const string id2);
+    void conectarRouters(const string& id1, const string& id2, int costo);
+    void eliminarConexion(const string& id1, const string& id2);
     void cargarDesdeArchivo(const string& nombreArchivo);
 
     void mostrarRed() const;
 
-    map<string, int> dijkstra(const string origen) const;
+    map<string, int> dijkstra(const string& origen) const;
 
     vector<string> obtenerCamino(const string& origen, const string& destino) const;
     void mostrarCamino(const string& origen, const string& destino) const;
