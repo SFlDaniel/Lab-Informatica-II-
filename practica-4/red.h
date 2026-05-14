@@ -14,22 +14,32 @@ class Red {
 private:
 
     map<string, Router> routers;
-
+    void asegurarRouter(const string& id);
+    void dijkstraConPredecesor(
+        const string& origen,
+        map<string, int>& distancias,
+        map<string, string>& predecesor
+        ) const;
 public:
 
-    void agregarRouter(string id);
-    void eliminarRouter(string id);
+    void agregarRouter(const string id);
+    void eliminarRouter(const string id);
 
 
-    void conectarRouters(string id1, string id2, int costo);
-    void eliminarConexion(string id1, string id2);
-    void mostrarRed();
+    void conectarRouters(const string id1, const string id2, int costo);
+    void eliminarConexion(const string id1, const string id2);
+    void cargarDesdeArchivo(const string& nombreArchivo);
 
-    map<string, int> dijkstra(string origen);
+    void mostrarRed() const;
+
+    map<string, int> dijkstra(const string origen) const;
+
+    vector<string> obtenerCamino(const string& origen, const string& destino) const;
+    void mostrarCamino(const string& origen, const string& destino) const;
 
     void actualizarTablas();
 
-    void mostrarTablas();
+    void mostrarTablas() const;
 };
 
 #endif
