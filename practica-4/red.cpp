@@ -80,15 +80,13 @@ void Red::cargarDesdeArchivo(const std::string& nombreArchivo) {
 }
 
 void Red::mostrarRed() const {
-    cout << "Topologia";
+    std::cout << "Topologia";
 
     for (const auto &par : routers) {
         par.second.imprimirVecinos();
         std::cout << endl;
     }
 }
-
-
 
 void Red::dijkstraConPredecesor(
     const std::string& origen,

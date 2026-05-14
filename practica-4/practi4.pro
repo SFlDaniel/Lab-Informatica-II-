@@ -12,3 +12,7 @@ SOURCES += main.cpp \
 HEADERS += \
     red.h \
     router.h
+
+DISTFILES += \
+    topologia.txt\
+    conexiones.txt
