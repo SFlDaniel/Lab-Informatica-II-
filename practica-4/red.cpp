@@ -36,18 +36,25 @@ void Red::conectarRouters(const std::string& id1, const std::string& id2, int co
     routers.at(id1).agregarVecino(id2, costo);
     routers.at(id2).agregarVecino(id1, costo);
 }
+void Red::eliminarConexion(const std::string& id1,
+     const std::string& id2) {
 
-void Red::eliminarConexion(const std::string& id1, const std::string& id2) {
     auto it1 = routers.find(id1);
     auto it2 = routers.find(id2);
 
-    if (it1 != routers.end()) {
-        it1->second.eliminarVecino(id2);
+    if (it1 == routers.end() || it2 == routers.end()) {
+        std::cout << "Uno de los routers no existe\n";
+        return;
     }
 
-    if (it2 != routers.end()) {
-        it2->second.eliminarVecino(id1);
-    }
+    it1->second.eliminarVecino(id2);
+    it2->second.eliminarVecino(id1);
+
+    std::cout << "Conexion eliminada entre "
+    << id1
+    << " y "
+    << id2
+    << "\n";
 }
 
 void Red::cargarDesdeArchivo(const std::string& nombreArchivo) {

@@ -53,33 +53,67 @@ int main() {
         }
 
         case 3: {
-            string r1, r2;
-            int costo;
 
-            cout << "\nRouter origen: ";
-            cin >> r1;
-            cout << "Router destino: ";
-            cin >> r2;
-            cout << "Costo: ";
-            cin >> costo;
+            char continuar = 's';
 
-            red.conectarRouters(r1, r2, costo);
-            red.actualizarTablas();
-            cout << "Conexion agregada\n";
+            while (continuar == 's' || continuar == 'S') {
+
+                string r1, r2;
+                int costo;
+
+                cout << "\n===== AGREGAR CONEXION =====\n";
+
+                cout << "Router origen: ";
+                cin >> r1;
+
+                cout << "Router destino: ";
+                cin >> r2;
+
+                cout << "Costo: ";
+                cin >> costo;
+
+                red.conectarRouters(r1, r2, costo);
+                red.actualizarTablas();
+
+                cout << "\nConexion agregada correctamente\n";
+
+                cout << "\nTopologia actual:\n";
+                red.mostrarRed();
+
+                cout << "\nDesea agregar otra conexion? (s/n): ";
+                cin >> continuar;
+            }
 
             break;
         }
 
         case 4: {
-            string r1, r2;
 
-            cout << "\nRouter 1: ";
-            cin >> r1;
-            cout << "Router 2: ";
-            cin >> r2;
-            red.eliminarConexion(r1, r2);
-            red.actualizarTablas();
-            cout << "Conexion eliminada\n";
+            char continuar = 's';
+
+            while (continuar == 's' || continuar == 'S') {
+
+                string r1, r2;
+
+                cout << "\n===== ELIMINAR CONEXION =====\n";
+
+                cout << "Router 1: ";
+                cin >> r1;
+
+                cout << "Router 2: ";
+                cin >> r2;
+
+                red.eliminarConexion(r1, r2);
+                red.actualizarTablas();
+
+                cout << "\nConexion eliminada correctamente\n";
+
+                cout << "\nTopologia actual:\n";
+                red.mostrarRed();
+
+                cout << "\nDesea eliminar otra conexion? (s/n): ";
+                cin >> continuar;
+            }
 
             break;
         }
@@ -132,12 +166,30 @@ int main() {
         }
 
         case 8: {
-            string id;
-            cout << "\nID del router a eliminar: ";
-            cin >> id;
-            red.eliminarRouter(id);
-            red.actualizarTablas();
-            cout << "Router eliminado\n";
+
+            char continuar = 's';
+
+            while (continuar == 's' || continuar == 'S') {
+
+                string id;
+
+                cout << "\n===== ELIMINAR ROUTER =====\n";
+
+                cout << "ID del router a eliminar: ";
+                cin >> id;
+
+                red.eliminarRouter(id);
+                red.actualizarTablas();
+
+                cout << "\nRouter eliminado correctamente\n";
+
+                cout << "\nTopologia actual:\n";
+                red.mostrarRed();
+
+                cout << "\nDesea eliminar otro router? (s/n): ";
+                cin >> continuar;
+            }
+
             break;
         }
 
