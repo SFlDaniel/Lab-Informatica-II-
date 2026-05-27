@@ -1,12 +1,29 @@
-#include <QApplication>
-#include "gamewindow.h"
+#include <iostream>
 
-int main(int argc, char *argv[])
+#include "fisica.h"
+
+using namespace std;
+///prueba
+int main()
 {
-    QApplication app(argc, argv);
+    Fisica sistema;
 
-    GameWindow window;
-    window.show();
+    sistema.agregarParticula(
+        new Particula(0,0,100,45,10));
 
-    return app.exec();
+    sistema.agregarParticula(
+        new Particula(50,50,80,135,20));
+
+    for(int i=0;i<100;i++)
+    {
+        sistema.actualizarSistema(0.1,
+                                  800,
+                                  600);
+
+        cout << "Paso "
+             << i
+             << endl;
+    }
+
+    return 0;
 }
