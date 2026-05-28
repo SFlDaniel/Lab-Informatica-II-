@@ -3,9 +3,8 @@
 
 #include <QWidget>
 #include <QTimer>
-#include <fstream>
-#include <vector>
 #include "fisica.h"
+#include "exportador.h"
 
 class GameWindow : public QWidget
 {
@@ -22,16 +21,15 @@ private slots:
     void actualizarFrame();
 
 private:
-    Fisica  fisica;
-    QTimer* timer;
-    std::ofstream archivo;
-    double  tiempo;
+    Fisica      fisica;
+    Exportador  exportador;
+    QTimer*     timer;
+    double      tiempo;
 
-    static const int ANCHO = 800;
-    static const int ALTO  = 600;
+    static const int ANCHO = 1000;
+    static const int ALTO  = 700;
 
     void inicializarEscena();
-    void guardarEstado();
 };
 
-#endif // GAMEWINDOW_H
+#endif

@@ -35,7 +35,7 @@ void Fisica::actualizarSistema(double dt,
         if(p->getY() <= 0 ||
             p->getY() >= alto)
         {
-            p->reboteVertical(0.8);
+            p->reboteVertical(1.0);
         }
 
         for(auto o : obstaculos)
