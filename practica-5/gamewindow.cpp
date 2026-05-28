@@ -1,125 +1,151 @@
 #include "gamewindow.h"
 #include <QPainter>
 #include <QColor>
+#include <QString>
+#include <cmath>
 
-// Dimensiones de la ventana (caja de simulación)
-static const double ANCHO = 800.0;
-static const double ALTO  = 600.0;
-static const double DT    = 0.05;
+static const double DT = 0.05;
+
+static const QColor COLORES[] = {
+    QColor(70, 130, 255),
+    QColor(255,  80,  80),
+    QColor( 80, 220, 100),
+    QColor(255, 180,  30),
+    QColor(200,  80, 255),
+};
+static const int N_COLORES = 5;
+
+struct ObsData { double x, y, w, h; };
+static const ObsData OBS[4] = {
+    {160, 160, 90, 90},
+    {550, 160, 90, 90},
+    {160, 380, 90, 90},
+    {550, 380, 90, 90},
+    };
 
 GameWindow::GameWindow(QWidget *parent)
     : QWidget(parent), tiempo(0.0)
 {
-    setFixedSize((int)ANCHO, (int)ALTO);
-    setWindowTitle("Simulación de Partículas - Práctica 5");
+    setFixedSize(ANCHO, ALTO);
+    setWindowTitle("Simulación Colisiones Múltiples - Práctica 5");
 
-    // Abrir archivo de salida
     archivo.open("trayectorias.txt");
-    if (archivo.is_open())
-        archivo << "# tiempo id x y velX velY masa\n";
+    if (archivo.is_open()) {
+        archivo << "# SIMULACION DE COLISIONES MULTIPLES\n";
+        archivo << "# tiempo  id  x  y  velX  velY  masa\n";
+        archivo << "# COLISION  tiempo  tipo  info\n";
+        archivo << "#--------------------------------------------------\n";
+    }
 
-    inicializarObstaculos();
-    inicializarParticulas();
+    inicializarEscena();
 
-    // Timer: ~60 fps
     timer = new QTimer(this);
-    connect(timer, &QTimer::timeout,
-            this,  &GameWindow::actualizarFrame);
+    connect(timer, &QTimer::timeout, this, &GameWindow::actualizarFrame);
     timer->start(16);
 }
 
 GameWindow::~GameWindow()
 {
-    if (archivo.is_open())
-        archivo.close();
+    if (archivo.is_open()) archivo.close();
 }
 
-// Configuración inicia
-
-void GameWindow::inicializarParticulas()
+void GameWindow::inicializarEscena()
 {
-    // 4 partículas: x, y, velocidad, ángulo, masa
-    fisica.agregarParticula(new Particula(100, 300, 80,  45,  1.0));
-    fisica.agregarParticula(new Particula(700, 300, 80, 135,  1.5));
-    fisica.agregarParticula(new Particula(400, 100, 60, 270,  2.0));
-    fisica.agregarParticula(new Particula(400, 500, 70,  90,  1.2));
-}
+    fisica.agregarParticula(new Particula(100, 300, 90,  40, 1.0));
+    fisica.agregarParticula(new Particula(700, 300, 90, 140, 1.5));
+    fisica.agregarParticula(new Particula(400,  80, 70, 280, 2.0));
+    fisica.agregarParticula(new Particula(400, 520, 80, 100, 1.2));
 
-void GameWindow::inicializarObstaculos()
-{
-    // 4 obstáculos: x, y, ancho, alto, coef. restitución
-    fisica.agregarObstaculo(new Obstaculo(150, 200, 80, 80, 0.6));
-    fisica.agregarObstaculo(new Obstaculo(570, 200, 80, 80, 0.6));
-    fisica.agregarObstaculo(new Obstaculo(150, 420, 80, 80, 0.6));
-    fisica.agregarObstaculo(new Obstaculo(570, 420, 80, 80, 0.6));
+    for (int i = 0; i < 4; i++)
+        fisica.agregarObstaculo(
+            new Obstaculo(OBS[i].x, OBS[i].y, OBS[i].w, OBS[i].h, 0.6));
 }
-
-//Lógica por frame ─
 
 void GameWindow::actualizarFrame()
 {
     guardarEstado();
+
+    size_t nAntes = fisica.getParticulas().size();
     fisica.actualizarSistema(DT, ANCHO, ALTO);
+    size_t nDespues = fisica.getParticulas().size();
+
+    if (nDespues < nAntes && archivo.is_open())
+        archivo << "COLISION  " << tiempo
+                << "  particula-particula (fusion inelastica)"
+                << "  particulas restantes: " << nDespues << "\n";
+
     tiempo += DT;
-    update(); // Redibuja
+    update();
 }
 
 void GameWindow::guardarEstado()
 {
     if (!archivo.is_open()) return;
-
-    auto& particulas = fisica.getParticulas();
-    for (size_t i = 0; i < particulas.size(); i++) {
-        archivo << tiempo             << " "
-                << i                  << " "
-                << particulas[i]->getX()    << " "
-                << particulas[i]->getY()    << " "
-                << particulas[i]->getVelX() << " "
-                << particulas[i]->getVelY() << " "
-                << particulas[i]->getMasa() << "\n";
+    auto& ps = fisica.getParticulas();
+    for (size_t i = 0; i < ps.size(); i++) {
+        archivo << tiempo           << "  "
+                << i                << "  "
+                << ps[i]->getX()    << "  "
+                << ps[i]->getY()    << "  "
+                << ps[i]->getVelX() << "  "
+                << ps[i]->getVelY() << "  "
+                << ps[i]->getMasa() << "\n";
     }
 }
 
-//  Dibuj
-
 void GameWindow::paintEvent(QPaintEvent*)
 {
-    QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
+    QPainter p(this);
+    p.setRenderHint(QPainter::Antialiasing);
 
-    // Fondo negro
-    painter.fillRect(rect(), Qt::black);
+    p.fillRect(rect(), QColor(20, 20, 35));
 
-    // Obstáculos (gris)
-    painter.setBrush(QColor(100, 100, 100));
-    painter.setPen(Qt::white);
-    // No tenemos lista directa de obstáculos en GameWindow,
-    // pero los dibujamos con las posiciones que conocemos
-    QList<QRectF> obs = {
-        {150, 200, 80, 80},
-        {570, 200, 80, 80},
-        {150, 420, 80, 80},
-        {570, 420, 80, 80}
-    };
-    for (auto& r : obs)
-        painter.drawRect(r);
+    p.setPen(QPen(QColor(180, 180, 200), 2));
+    p.setBrush(Qt::NoBrush);
+    p.drawRect(1, 1, ANCHO - 2, ALTO - 2);
 
-    QList<QColor> colores = {Qt::blue, Qt::red, Qt::green, QColor(255,165,0)};
-    auto& particulas = fisica.getParticulas();
-    for (size_t i = 0; i < particulas.size(); i++) {
-        double r = particulas[i]->getRadio();
-        double x = particulas[i]->getX() - r;
-        double y = particulas[i]->getY() - r;
-        QColor c = colores[(int)i % colores.size()];
-        painter.setBrush(c);
-        painter.setPen(Qt::white);
-        painter.drawEllipse(QRectF(x, y, r*2, r*2));
+    for (int i = 0; i < 4; i++) {
+        QRectF r(OBS[i].x, OBS[i].y, OBS[i].w, OBS[i].h);
+        p.setBrush(QColor(90, 90, 110));
+        p.setPen(QPen(QColor(160, 160, 180), 1));
+        p.drawRect(r);
+        p.setPen(Qt::white);
+        p.setFont(QFont("Arial", 8));
+        p.drawText(r, Qt::AlignCenter, "e=0.6");
     }
 
-    // HUD: tiempo
-    painter.setPen(Qt::white);
-    painter.drawText(10, 20,
-                     QString("t = %1 s  |  Partículas: %2")
-                         .arg(tiempo, 0, 'f', 1)
-                         .arg(particulas.size()));
+    auto& ps = fisica.getParticulas();
+    for (size_t i = 0; i < ps.size(); i++) {
+        double r  = ps[i]->getRadio();
+        double cx = ps[i]->getX();
+        double cy = ps[i]->getY();
+        QColor c  = COLORES[i % N_COLORES];
+
+        p.setBrush(QColor(0, 0, 0, 60));
+        p.setPen(Qt::NoPen);
+        p.drawEllipse(QRectF(cx - r + 3, cy - r + 3, r*2, r*2));
+
+        p.setBrush(c);
+        p.setPen(QPen(c.lighter(160), 1.5));
+        p.drawEllipse(QRectF(cx - r, cy - r, r*2, r*2));
+
+        p.setPen(Qt::white);
+        p.setFont(QFont("Arial", 7, QFont::Bold));
+        p.drawText(QRectF(cx - r, cy - r, r*2, r*2),
+                   Qt::AlignCenter,
+                   QString("m=%1").arg(ps[i]->getMasa(), 0, 'f', 1));
+    }
+
+    p.setPen(QColor(220, 220, 220));
+    p.setFont(QFont("Arial", 10));
+    p.drawText(10, 20,
+               QString("t = %1 s    Particulas activas: %2")
+                   .arg(tiempo, 0, 'f', 2)
+                   .arg(ps.size()));
+
+    p.setFont(QFont("Arial", 8));
+    p.setPen(QColor(160, 200, 160));
+    p.drawText(10, ALTO - 30, "Paredes: rebote elastico");
+    p.setPen(QColor(200, 160, 100));
+    p.drawText(10, ALTO - 15, "Obstaculos: rebote inelastico (e=0.6)  |  Particulas: fusion inelastica");
 }
