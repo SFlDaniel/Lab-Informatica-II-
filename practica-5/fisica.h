@@ -12,6 +12,9 @@ private:
     std::vector<Particula*> particulas;
     std::vector<Obstaculo*> obstaculos;
 
+    void colisionParticulaObstaculo(
+        Particula* p,
+        Obstaculo* o);
 public:
 
     Fisica();

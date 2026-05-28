@@ -1,4 +1,5 @@
 #include "fisica.h"
+#include <cmath>
 
 Fisica::Fisica()
 {
@@ -36,21 +37,63 @@ void Fisica::actualizarSistema(double dt,
         {
             p->reboteVertical(0.8);
         }
-    }
 
-    for(auto o : obstaculos)
-    {
-        if(o->detectarColision(
-                p->getX(),
-                p->getY(),
-                p->getRadio()))
+        for(auto o : obstaculos)
         {
-            p->reboteVertical(
-                o->getRestitucion());
+            if(o->detectarColision(
+                    p->getX(),
+                    p->getY(),
+                    p->getRadio()))
+            {
+                colisionParticulaObstaculo(p, o);
+            }
         }
     }
 
     detectarColisiones();
+}
+
+void Fisica::colisionParticulaObstaculo(
+    Particula *p,
+    Obstaculo *o)
+{
+    double px = p->getX();
+    double py = p->getY();
+
+    double ox = o->getX();
+    double oy = o->getY();
+
+    double ancho = o->getAncho();
+    double alto = o->getAlto();
+
+    // Distancias a cada lado
+    double izquierda = fabs(px - ox);
+
+    double derecha =
+        fabs(px - (ox + ancho));
+
+    double arriba = fabs(py - oy);
+
+    double abajo =
+        fabs(py - (oy + alto));
+
+    // Encontrar menor distancia
+    double minimo =
+        std::min(
+            std::min(izquierda, derecha),
+            std::min(arriba, abajo));
+
+    // Rebote lateral
+    if(minimo == izquierda ||
+        minimo == derecha)
+    {
+        p->reboteHorizontal();
+    }
+    else
+    {
+        p->reboteVertical(
+            o->getRestitucion());
+    }
 }
 
 void Fisica::detectarColisiones()

@@ -27,6 +27,11 @@ public:
 
     double getRestitucion();
 
+    double getX();
+    double getY();
+
+    double getAncho();
+    double getAlto();
 };
 
 #endif

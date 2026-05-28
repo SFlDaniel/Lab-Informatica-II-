@@ -30,3 +30,22 @@ double Obstaculo::getRestitucion()
     return restitucion;
 }
 
+double Obstaculo::getX()
+{
+    return x;
+}
+
+double Obstaculo::getY()
+{
+    return y;
+}
+
+double Obstaculo::getAncho()
+{
+    return ancho;
+}
+
+double Obstaculo::getAlto()
+{
+    return alto;
+}
