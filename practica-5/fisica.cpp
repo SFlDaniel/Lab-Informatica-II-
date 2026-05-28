@@ -10,6 +10,11 @@ void Fisica::agregarParticula(Particula *p)
     particulas.push_back(p);
 }
 
+void Fisica::agregarObstaculo(Obstaculo *o)
+{
+    obstaculos.push_back(o);
+}
+
 void Fisica::actualizarSistema(double dt,
                                double ancho,
                                double alto)
@@ -30,6 +35,18 @@ void Fisica::actualizarSistema(double dt,
             p->getY() >= alto)
         {
             p->reboteVertical(0.8);
+        }
+    }
+
+    for(auto o : obstaculos)
+    {
+        if(o->detectarColision(
+                p->getX(),
+                p->getY(),
+                p->getRadio()))
+        {
+            p->reboteVertical(
+                o->getRestitucion());
         }
     }
 

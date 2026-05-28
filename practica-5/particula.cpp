@@ -39,6 +39,10 @@ void Particula::reboteHorizontal()
 void Particula::reboteVertical(double restitucion)
 {
     velY *= -restitucion;
+    if(fabs(velY) < 1)
+    {
+        velY = 0;
+    }
 }
 
 bool Particula::detectarColision(Particula *otra)
@@ -62,7 +66,14 @@ void Particula::fusionar(Particula *otra)
     velY = (masa*velY + otra->masa*otra->velY)
            / nuevaMasa;
 
+    x = (masa*x + otra->masa*otra->x)
+        / nuevaMasa;
+
+    y = (masa*y + otra->masa*otra->y)
+        / nuevaMasa;
+
     masa = nuevaMasa;
+    radio = sqrt(nuevaMasa);
 }
 
 double Particula::getX()

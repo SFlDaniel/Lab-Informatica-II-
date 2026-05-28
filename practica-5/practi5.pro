@@ -8,12 +8,14 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += \
+        exportador.cpp \
         fisica.cpp \
         gamewindow.cpp \
         main.cpp \
         obstaculo.cpp \
         particula.cpp
 HEADERS += \
+    exportador.h \
     fisica.h \
     gamewindow.h \
     obstaculo.h \
