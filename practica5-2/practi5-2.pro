@@ -10,6 +10,7 @@ SOURCES += \
     juego.cpp \
     jugador.cpp \
     main.cpp \
+    panelcontrol.cpp \
     proyectil.cpp
 
 HEADERS += \
@@ -18,6 +19,7 @@ HEADERS += \
     infraestructura.h \
     juego.h \
     jugador.h \
+    panelcontrol.h \
     proyectil.h
 
 TARGET = Practica5Parte2

@@ -1,10 +1,50 @@
 #ifndef GAMEWINDOW_H
 #define GAMEWINDOW_H
 
-class gamewindow
+#include <QWidget>
+
+#include <QGraphicsScene>
+#include <QGraphicsView>
+
+#include <QGraphicsEllipseItem>
+#include <QGraphicsRectItem>
+
+#include <QTimer>
+
+#include <vector>
+
+#include "juego.h"
+
+class GameWindow : public QWidget
 {
+    Q_OBJECT
+
+private:
+
+    Juego juego;
+
+    QGraphicsScene* scene;
+
+    QGraphicsView* view;
+
+    QTimer* timer;
+
+    std::vector<QGraphicsEllipseItem*>
+        proyectilesGraficos;
+
+    std::vector<QGraphicsRectItem*>
+        infraestructurasGraficas;
+
+    void crearEscena();
+
+    void actualizarGUI();
+
+    PanelControl* panel;
+
 public:
-    gamewindow();
+
+    GameWindow(QWidget *parent = nullptr);
+
 };
 
-#endif // GAMEWINDOW_H
+#endif
