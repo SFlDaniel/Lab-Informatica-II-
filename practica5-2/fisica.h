@@ -16,6 +16,10 @@ private:
 
     double factorDanio;
 
+    void colisionProyectilInfraestructura(
+        Proyectil* p,
+        Infraestructura* i);
+
 public:
 
     Fisica();

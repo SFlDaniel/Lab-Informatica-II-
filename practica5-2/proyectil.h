@@ -14,6 +14,7 @@ private:
     double masa;
 
     double gravedad;
+    int propietario;
 
 public:
 
@@ -21,11 +22,12 @@ public:
               double y,
               double velocidad,
               double angulo,
-              double masa);
+              double masa,
+              int propietario);
 
     void actualizar(double dt);
 
-    void reboteHorizontal();
+    void reboteHorizontal(double restitucion);
 
     void reboteVertical(double restitucion);
 
@@ -38,6 +40,8 @@ public:
     double getMasa();
 
     double getVelocidad();
+
+    int getPropietario();
 
     void setPosicion(double x,
                      double y);

@@ -1,8 +1,18 @@
 #include "juego.h"
 
 Juego::Juego()
-    : jugador1("Jugador 1"),
-    jugador2("Jugador 2")
+    :
+    jugador1(
+        "Jugador 1",
+        100,
+        50,
+        100),
+
+    jugador2(
+        "Jugador 2",
+        1100,
+        50,
+        100)
 {
     turnoActual = 1;
 }
@@ -78,12 +88,26 @@ void Juego::disparar(double x,
             y,
             velocidad,
             angulo,
-            masa);
+            masa,
+            turnoActual);
 
     fisica.agregarProyectil(p);
+
+    if (proyectilEnVuelo) return;
+    proyectilEnVuelo = true;
 }
 
 Fisica& Juego::getFisica()
 {
     return fisica;
+}
+
+Jugador& Juego::getJugador1()
+{
+    return jugador1;
+}
+
+Jugador& Juego::getJugador2()
+{
+    return jugador2;
 }

@@ -3,9 +3,8 @@
 
 #include "jugador.h"
 #include "fisica.h"
-#include "proyectil.h"
 
-    class Juego
+class Juego
 {
 private:
 
@@ -31,6 +30,8 @@ public:
 
     bool verificarVictoria();
 
+    bool proyectilEnVuelo;
+
     Jugador* obtenerGanador();
 
     void disparar(double x,
@@ -40,6 +41,10 @@ public:
                   double masa);
 
     Fisica& getFisica();
+
+    Jugador& getJugador1();
+
+    Jugador& getJugador2();
 };
 
 #endif
