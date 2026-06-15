@@ -14,13 +14,15 @@ private:
     double resistencia;
 
     double restitucion;
+    int propietario;
 public:
     Infraestructura(double x,
                     double y,
                     double ancho,
                     double alto,
                     double resistencia,
-                    double restitucion);
+                    double restitucion,
+                    int propietario);
 
     bool detectarColision(double px,
                           double py);
@@ -38,6 +40,7 @@ public:
     double getResistencia();
 
     double getRestitucion();
+    int getPropietario();
 };
 
 #endif // INFRAESTRUCTURA_H

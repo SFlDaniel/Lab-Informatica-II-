@@ -1,10 +1,48 @@
 #ifndef JUGADOR_H
 #define JUGADOR_H
 
-class jugador
+#include <QString>
+#include <vector>
+
+#include "infraestructura.h"
+
+class Jugador
 {
+private:
+
+    QString nombre;
+
+    double x;
+    double y;
+
+    double vida;
+
+    std::vector<Infraestructura*> infraestructuras;
+
 public:
-    jugador();
+
+    Jugador(QString nombre,
+            double x,
+            double y,
+            double vida);
+
+    void agregarInfraestructura(
+        Infraestructura* i);
+
+    bool derrotado();
+
+    void recibirDanio(
+        double danio);
+
+    QString getNombre();
+
+    double getX();
+    double getY();
+
+    double getVida();
+
+    std::vector<Infraestructura*>&
+    getInfraestructuras();
 };
 
-#endif // JUGADOR_H
+#endif

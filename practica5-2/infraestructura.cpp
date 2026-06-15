@@ -6,7 +6,8 @@ Infraestructura::Infraestructura(
     double anchoIn,
     double altoIn,
     double resistenciaIn,
-    double restitucionIn)
+    double restitucionIn,
+    int propietarioIn)
 {
     x = xIn;
     y = yIn;
@@ -17,6 +18,8 @@ Infraestructura::Infraestructura(
     resistencia = resistenciaIn;
 
     restitucion = restitucionIn;
+
+    propietario = propietarioIn;
 }
 
 bool Infraestructura::detectarColision(
@@ -75,4 +78,9 @@ double Infraestructura::getResistencia()
 double Infraestructura::getRestitucion()
 {
     return restitucion;
+}
+
+int Infraestructura::getPropietario()
+{
+    return propietario;
 }
